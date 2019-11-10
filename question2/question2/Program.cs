@@ -45,39 +45,45 @@ namespace Targil1_2Amiti
             //TO DO
         }
 
-        // fonction for the case 1
+        // fonction pour remplir un emploie du temps
         private static bool AddDay(bool[,] tab)
         {
-            int compteur = 0;
-            Console.WriteLine("Enter the number of the month : ");
+            int compteur = 0;//??????
+
+
+            Console.WriteLine("Enter the number of the month : ");            /*demande le mois */
             int nbOfTheMonth = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter the date of the fist day : ");
+            Console.WriteLine("Enter the date of the fist day : ");         /*demande a partir de quel jour*/
             int dateOfTheFirstDay = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter how many days : ");
+            Console.WriteLine("Enter how many days : ");                    /*pour combien de temps*/
             int nbOfDays = int.Parse(Console.ReadLine());
 
-            for (int i = dateOfTheFirstDay - 1; i < nbOfDays; i++)
+            /*j ai modifier le i il va jusqua ex: de 12 au (12+2j)*/
+            int dateButoir=dateOfTheFirstDay+nbOfDays;
+            for (int i = dateOfTheFirstDay - 1; i < dateButoir-1 ; i++)     
             {
-                if (dateOfTheFirstDay > 31) nbOfTheMonth++;
-                if (tab[nbOfTheMonth - 1, dateOfTheFirstDay - 1] == false) //false = nobody for this day 
-                    compteur++;                                 // check if all days are free
+                if ((nbOfTheMonth!=2 && dateOfTheFirstDay > 31) ||(nbOfTheMonth==2 && dateOfTheFirstDay > 28))/*j ai rajouter le mois de fevrier*/
+                        nbOfTheMonth++;
+                if (tab[nbOfTheMonth - 1, i] == false) //false = jour libre 
+                    compteur++;                                 // verifie si tt les jours sont libre 
 
             }
 
             if (compteur == nbOfDays) //if all the days are free
             {
-                for (int i = dateOfTheFirstDay - 1; i < nbOfDays; i++)
+                for (int i = dateOfTheFirstDay - 1; i < dateButoir-1; i++)
                 {
-                    if (dateOfTheFirstDay > 31) nbOfTheMonth++;
-                    tab[nbOfTheMonth - 1, dateOfTheFirstDay - 1] = true; // put true(full) 
+                    if (dateOfTheFirstDay > 31) 
+                            nbOfTheMonth++;
+                    tab[nbOfTheMonth - 1, i] = true; // put true(full) 
 
                 }
-                return true;
+                return false;
             }
             else
-                return false;
+                return true;
         }
 
         //fonction for the case 2
@@ -90,9 +96,9 @@ namespace Targil1_2Amiti
                 if (compt++ > 30)  //jump a line all month 
                 {
                     Console.WriteLine();
-                    compt = 0;
+                    compt = 1;
                 }
-                Console.Write("{0,2} ", Convert.ToInt32(item));
+                Console.Write("{0,2} ", Convert.ToInt32( item));
             }
             Console.WriteLine();
         }
