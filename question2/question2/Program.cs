@@ -35,14 +35,14 @@ namespace Targil1_2Amiti
                         break;
 
                     case 3:
-                        //LO
+                        Console.WriteLine("{0} %, nb fully days: {1}",Pourcent(tab),count(tab,true,1,1,372));
                         break;
                     default:
-                        Console.WriteLine("error");
+                        Console.WriteLine("Wrong !");
                         break;
                 }
             } while (choice != 0);
-            //TO DO
+           
         }
 
         // fonction pour remplir un emploie du temps
@@ -52,38 +52,30 @@ namespace Targil1_2Amiti
 
 
             Console.WriteLine("Enter the number of the month : ");            /*demande le mois */
-            int nbOfTheMonth = int.Parse(Console.ReadLine());
+           int month = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Enter the date of the fist day : ");         /*demande a partir de quel jour*/
-            int dateOfTheFirstDay = int.Parse(Console.ReadLine());
+            int day = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Enter how many days : ");                    /*pour combien de temps*/
             int nbOfDays = int.Parse(Console.ReadLine());
+            
 
-            /*j ai modifier le i il va jusqua ex: de 12 au (12+2j)*/
-            int dateButoir=dateOfTheFirstDay+nbOfDays;
-            for (int i = dateOfTheFirstDay - 1; i < dateButoir-1 ; i++)     
+            if (count(tab,false,month,day,nbOfDays) == nbOfDays) //if all the days are free
             {
-                if ((nbOfTheMonth!=2 && dateOfTheFirstDay > 31) ||(nbOfTheMonth==2 && dateOfTheFirstDay > 28))/*j ai rajouter le mois de fevrier*/
-                        nbOfTheMonth++;
-                if (tab[nbOfTheMonth - 1, i] == false) //false = jour libre 
-                    compteur++;                                 // verifie si tt les jours sont libre 
-
-            }
-
-            if (compteur == nbOfDays) //if all the days are free
-            {
-                for (int i = dateOfTheFirstDay - 1; i < dateButoir-1; i++)
+                for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)
                 {
-                    if (dateOfTheFirstDay > 31) 
-                            nbOfTheMonth++;
-                    tab[nbOfTheMonth - 1, i] = true; // put true(full) 
-
+                     if ( k > 31) 
+                     {
+                        j++;
+                        k=1;
+                     }
+                    tab[j-1, k-1] = true; // put true(full) 
                 }
-                return false;
+                return true;
             }
             else
-                return true;
+                return false;
         }
 
         //fonction for the case 2
@@ -102,5 +94,27 @@ namespace Targil1_2Amiti
             }
             Console.WriteLine();
         }
+        private static int Pourcent(bool [,] tab)
+        {
+            int  max=372;
+            int nbFullDays=count(tab,true,1,1,372);
+            return (100*nbFullDays/max);
+        }
+         private static int count(bool [,]tab,bool flag,int month,int day,int nbOfDays)
+         {
+            int count=0;
+             for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)     
+             {
+                if (k > 31) 
+                {
+                    j++;
+                    k=1;
+                }    
+                if (tab[j - 1, k-1] == flag) //false = jour libre 
+                    count++;                                 // verifie si tt les jours sont libre 
+
+             }
+             return count; 
+         }
     }
 }
