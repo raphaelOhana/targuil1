@@ -32,6 +32,7 @@ namespace Targil1_2Amiti
 
                     case 2:
                         PrintTab(tab);
+                        printAllBusyDate(tab);
                         break;
 
                     case 3:
@@ -77,7 +78,7 @@ namespace Targil1_2Amiti
             else
                 return false;
         }
-
+        enum Mounth {january=1,february,march,april,may,june,july,august,september,october,november ,december}
         //fonction for the case 2
         private static void PrintTab(bool[,] tab)
         {
@@ -85,7 +86,7 @@ namespace Targil1_2Amiti
 
             foreach (bool item in tab)
             {
-                if (compt++ > 30)  //jump a line all month 
+                if (compt++ > 30)           //jump a line all month 
                 {
                     Console.WriteLine();
                     compt = 1;
@@ -100,7 +101,7 @@ namespace Targil1_2Amiti
             int nbFullDays=count(tab,true,1,1,372);
             return (100*nbFullDays/max);
         }
-         private static int count(bool [,]tab,bool flag,int month,int day,int nbOfDays)
+        private static int count(bool [,]tab,bool flag,int month,int day,int nbOfDays)
          {
             int count=0;
              for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)     
@@ -112,9 +113,31 @@ namespace Targil1_2Amiti
                 }    
                 if (tab[j - 1, k-1] == flag) //false = jour libre 
                     count++;                                 // verifie si tt les jours sont libre 
-
              }
              return count; 
          }
+       private static void printAllBusyDate(bool[,] tab)       
+       {
+           bool busy=false;
+           for (int i = 0 ,j=1,k=1; i < 372 ; i++,k++)     
+           {
+                if (k > 31) 
+                {
+                    j++;
+                    k=1;
+                }    
+                if ((tab[j - 1, k-1] == true) && (busy==false)) //ca veut dire si c'est le premier d une liste de jour prit 
+                { 
+                    Console.Write("{0} {1} to ",k,(Mounth)j);
+                    busy=true;
+                }
+                if ((tab[j - 1, k-1] == false) && (busy==true))//ca veut dire si c'est le dernier d une liste de jour prit
+                { 
+                    Console.WriteLine("{0} {1} ",k,(Mounth)j);
+                    busy=false;
+                }
+           }
+       }
     }
+    
 }
