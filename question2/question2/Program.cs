@@ -12,8 +12,8 @@ namespace Targil1_2Amiti
         static void Main(string[] args)
         {
             int choice = -1;
-            bool[,] calandar = new bool[12, 31];
-            // true = plein et  false =libre
+            bool[,] tab = new bool[12, 31];
+
             do
             {
                 //ask the user to make a choice
@@ -24,58 +24,73 @@ namespace Targil1_2Amiti
                 {
 
                     case 1:
-                        if (AddDay(calandar))
+                        if (AddDay(tab))
                             Console.WriteLine("Your days are reserved");
                         else
                             Console.WriteLine("this days are already full");
                         break;
 
                     case 2:
-                        PrintTab(calandar);
-                        printAllBusyDate(calandar);
+                        PrintTab(tab);
                         break;
 
                     case 3:
-                        Console.WriteLine("{0} %, nb fully days: {1}",Pourcent(tab),count(calandar,true,1,1,372));
+                        //LO
                         break;
                     default:
-                        Console.WriteLine("Wrong !");
+                        Console.WriteLine("error");
                         break;
                 }
             } while (choice != 0);
-           
+            //TO DO
         }
 
         // fonction pour remplir un emploie du temps
         private static bool AddDay(bool[,] tab)
         {
+            int compteur = 0;//??????
+
+
             Console.WriteLine("Enter the number of the month : ");            /*demande le mois */
-           int month = int.Parse(Console.ReadLine());
+            int nbOfTheMonth = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Enter the date of the fist day : ");         /*demande a partir de quel jour*/
-            int day = int.Parse(Console.ReadLine());
+            int dateOfTheFirstDay = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Enter how many days : ");                    /*pour combien de temps*/
             int nbOfDays = int.Parse(Console.ReadLine());
-            
 
-            if (count(tab,false,month,day,nbOfDays) == nbOfDays) //si tout les jour demander sont libres
+            /*j ai modifier le i il va jusqua ex: de 12 au (12+2j)*/
+            int dateButoir=dateOfTheFirstDay+nbOfDays;
+            for (int i = dateOfTheFirstDay - 1; i < dateButoir-1 ; i++)     
             {
-                for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)
+                if ((dateOfTheFirstDay > 31))
+                        nbOfTheMonth++;
+                if (tab[nbOfTheMonth - 1, i] == false) //false = jour libre 
+                    compteur++;                                 // verifie si tt les jours sont libre 
+
+            }
+
+            if (compteur == nbOfDays) //if all the days are free
+            {
+                for (int i = dateOfTheFirstDay - 1; i < dateButoir-1; i++)
                 {
-                     if ( k > 31) 
-                     {
-                        j++;
-                        k=1;
-                     }
-                    tab[j-1, k-1] = true; //dis quil sont occupé 
+                    if (dateOfTheFirstDay > 31) 
+                    { nbOfTheMonth++;
+                            for (int j = 0; j < dateButoir-1; j++)
+			                {
+                            tab[nbOfTheMonth - 1, j] = true;
+			                }
+                    }
+                    tab[nbOfTheMonth - 1, i] = true; // put true(full) 
+
                 }
-                return true;
+                return false;
             }
             else
-                return false;
+                return true;
         }
-        enum Mounth {January=1,February,March,April,May,June,July,August,September,October,November ,December}
+
         //fonction for the case 2
         private static void PrintTab(bool[,] tab)
         {
@@ -83,7 +98,7 @@ namespace Targil1_2Amiti
 
             foreach (bool item in tab)
             {
-                if (compt++ > 30)           //jump a line all month 
+                if (compt++ > 30)  //jump a line all month 
                 {
                     Console.WriteLine();
                     compt = 1;
@@ -92,49 +107,5 @@ namespace Targil1_2Amiti
             }
             Console.WriteLine();
         }
-        private static int Pourcent(bool [,] tab)
-        {
-            int  max=372;
-            int nbFullDays=count(tab,true,1,1,372);
-            return (100*nbFullDays/max);
-        }
-        private static int count(bool [,]tab,bool flag,int month,int day,int nbOfDays)
-         {
-            int count=0;
-             for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)     
-             {
-                if (k > 31) 
-                {
-                    j++;
-                    k=1;
-                }    
-                if (tab[j - 1, k-1] == flag) //false = jour libre 
-                    count++;                 // verifie si tt les jours sont libre 
-             }
-             return count; 
-         }
-       private static void printAllBusyDate(bool[,] tab)       
-       {
-           bool busy=false;
-           for (int i = 0 ,j=1,k=1; i < 372 ; i++,k++)     
-           {
-                if (k > 31) 
-                {
-                    j++;
-                    k=1;
-                }    
-                if ((tab[j - 1, k-1] == true) && (busy==false)) //ca veut dire si c'est le premier d une liste de jour prit 
-                { 
-                    Console.Write("{0} {1} to ",k,(Mounth)j);
-                    busy=true;
-                }
-                if ((tab[j - 1, k-1] == false) && (busy==true))//ca veut dire si c'est le dernier d une liste de jour prit
-                { 
-                    Console.WriteLine("{0} {1} ",k,(Mounth)j);
-                    busy=false;
-                }
-           }
-       }
     }
-    
 }
