@@ -36,7 +36,7 @@ namespace Targil1_2Amiti
                         break;
 
                     case 3:
-                        Console.WriteLine("{0} %, nb fully days: {1}",Pourcent(tab),count(calandar,true,1,1,372));
+                        Console.WriteLine("{0} %, nb fully days: {1}",Pourcent(calandar),count(calandar,true,1,1,372));
                         break;
                     default:
                         Console.WriteLine("Wrong !");
@@ -59,7 +59,7 @@ namespace Targil1_2Amiti
             int nbOfDays = int.Parse(Console.ReadLine());
             
 
-            if (count(tab,false,month,day,nbOfDays) == nbOfDays) //si tout les jour demander sont libres
+            if (count(tab,false,month,day+1,nbOfDays-1) == nbOfDays-1) //si tout les jour demander sont libres(sans m interesser au premier jour)
             {
                 for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)
                 {
@@ -68,7 +68,7 @@ namespace Targil1_2Amiti
                         j++;
                         k=1;
                      }
-                    tab[j-1, k-1] = true; //dis quil sont occupé 
+                    tab[j-1, k-1] = true; //ecrit quil sont occupé 
                 }
                 return true;
             }
