@@ -12,8 +12,8 @@ namespace Targil1_2Amiti
         static void Main(string[] args)
         {
             int choice = -1;
-            bool[,] tab = new bool[12, 31];
-
+            bool[,] calandar = new bool[12, 31];
+            // true = plein et  false =libre
             do
             {
                 //ask the user to make a choice
@@ -24,19 +24,19 @@ namespace Targil1_2Amiti
                 {
 
                     case 1:
-                        if (AddDay(tab))
+                        if (AddDay(calandar))
                             Console.WriteLine("Your days are reserved");
                         else
                             Console.WriteLine("this days are already full");
                         break;
 
                     case 2:
-                        PrintTab(tab);
-                        printAllBusyDate(tab);
+                        PrintTab(calandar);
+                        printAllBusyDate(calandar);
                         break;
 
                     case 3:
-                        Console.WriteLine("{0} %, nb fully days: {1}",Pourcent(tab),count(tab,true,1,1,372));
+                        Console.WriteLine("{0} %, nb fully days: {1}",Pourcent(tab),count(calandar,true,1,1,372));
                         break;
                     default:
                         Console.WriteLine("Wrong !");
@@ -49,9 +49,6 @@ namespace Targil1_2Amiti
         // fonction pour remplir un emploie du temps
         private static bool AddDay(bool[,] tab)
         {
-            int compteur = 0;//??????
-
-
             Console.WriteLine("Enter the number of the month : ");            /*demande le mois */
            int month = int.Parse(Console.ReadLine());
 
@@ -62,7 +59,7 @@ namespace Targil1_2Amiti
             int nbOfDays = int.Parse(Console.ReadLine());
             
 
-            if (count(tab,false,month,day,nbOfDays) == nbOfDays) //if all the days are free
+            if (count(tab,false,month,day,nbOfDays) == nbOfDays) //si tout les jour demander sont libres
             {
                 for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)
                 {
@@ -71,14 +68,14 @@ namespace Targil1_2Amiti
                         j++;
                         k=1;
                      }
-                    tab[j-1, k-1] = true; // put true(full) 
+                    tab[j-1, k-1] = true; //dis quil sont occupé 
                 }
                 return true;
             }
             else
                 return false;
         }
-        enum Mounth {january=1,february,march,april,may,june,july,august,september,october,november ,december}
+        enum Mounth {January=1,February,March,April,May,June,July,August,September,October,November ,December}
         //fonction for the case 2
         private static void PrintTab(bool[,] tab)
         {
@@ -112,7 +109,7 @@ namespace Targil1_2Amiti
                     k=1;
                 }    
                 if (tab[j - 1, k-1] == flag) //false = jour libre 
-                    count++;                                 // verifie si tt les jours sont libre 
+                    count++;                 // verifie si tt les jours sont libre 
              }
              return count; 
          }
