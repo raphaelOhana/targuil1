@@ -5,14 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Targil1_1
+namespace dotNet5780_01_6789_0947
 {
     class Program
     {
-        static Random r = new Random(DateTime.Now.Millisecond);
-        const int SIZE = 20;
         static void Main(string[] args)
         {
+            Console.WriteLine("choose the number of the question: \n  1- cheela 1 \n  2- cheela 2");
+            switch(int.Parse (Console.ReadLine()))
+            {
+                case 1:
+                    question1();
+                    break;
+                case 2: 
+                    question2();
+                    break;
+               default:
+                    Console.WriteLine("undifined");
+                    break;
+            }
+        }
+    
+
+    private static void question1()
+    {
+        Random r = new Random(DateTime.Now.Millisecond);
+        const int SIZE = 20;
             int[] A = new int[SIZE];
             int[] B = new int[SIZE];
             int[] C = new int[SIZE];
@@ -24,34 +42,26 @@ namespace Targil1_1
                 C[i] = Math.Abs(A[i] - B[i]);
             }
             foreach (int item in A)
-            {
                 Console.Write("{0,3} ",item);
-            }
+
             Console.WriteLine();
+            
             foreach (int item in B)
-            {
                 Console.Write("{0,3} ", item);
-            }
             Console.WriteLine();
+            
             foreach (int item in C)
-            {
                 Console.Write("{0,3} ", item);
-            }
             Console.WriteLine();
 
             Console.WriteLine("Press any key to continue...");
             Console.ReadKey();
-        }
+        
+
     }
-}
-
-
-namespace Targil1_2
-{
-    class Program
+    private static void question2()
     {
-        static void Main(string[] args)
-        {
+
             int choice = -1;
             bool[,] calandar = new bool[12, 31];
             // true = plein et  false =libre
@@ -65,10 +75,7 @@ namespace Targil1_2
                 {
 
                     case 1:
-                        if (AddDay(calandar))
-                            Console.WriteLine("Your days are reserved");
-                        else
-                            Console.WriteLine("this days are already full");
+                        AddDay(calandar);
                         break;
 
                     case 2:
@@ -85,10 +92,10 @@ namespace Targil1_2
                 }
             } while (choice != 0);
            
-        }
+    }
 
         // fonction pour remplir un emploie du temps
-        private static bool AddDay(bool[,] tab)
+        public static bool AddDay(bool[,] tab)
         {
             Console.WriteLine("Enter the number of the month : ");            /*demande le mois */
            int month = int.Parse(Console.ReadLine());
@@ -98,7 +105,8 @@ namespace Targil1_2
 
             Console.WriteLine("Enter how many days : ");                    /*pour combien de temps*/
             int nbOfDays = int.Parse(Console.ReadLine());
-            
+            if(!(month+((day+nbOfDays)/31)>12))
+            {
 
             if (count(tab,false,month,day+1,nbOfDays-1) == nbOfDays-1) //si tout les jour demander sont libres(sans m interesser au premier jour)
             {
@@ -111,14 +119,23 @@ namespace Targil1_2
                      }
                     tab[j-1, k-1] = true; //ecrit quil sont occupé 
                 }
+                Console.WriteLine("Your days are reserved");
                 return true;
             }
             else
+            {
+                Console.WriteLine("this days are already full");
                 return false;
+            }
+            }
+            else
+                Console.WriteLine("too many days , finished years broo");
+            return false;
         }
         enum Mounth {January=1,February,March,April,May,June,July,August,September,October,November ,December}
+        enum busy {_,X}
         //fonction for the case 2
-        private static void PrintTab(bool[,] tab)
+       public static void PrintTab(bool[,] tab)
         {
             int compt = 0;
 
@@ -129,32 +146,33 @@ namespace Targil1_2
                     Console.WriteLine();
                     compt = 1;
                 }
-                Console.Write("{0,2} ", Convert.ToInt32( item));
+                Console.Write("{0,2} ",(busy)Convert.ToInt32( item));
             }
             Console.WriteLine();
         }
-        private static int Pourcent(bool [,] tab)
+        public static int Pourcent(bool [,] tab)
         {
             int  max=372;
             int nbFullDays=count(tab,true,1,1,372);
             return (100*nbFullDays/max);
         }
-        private static int count(bool [,]tab,bool flag,int month,int day,int nbOfDays)
+        public static int count(bool [,]tab,bool flag,int month,int day,int nbOfDays)
          {
             int count=0;
-             for (int i = 0 ,j=month,k=day; i < nbOfDays ; i++,k++)     
+             for (int i = 0 ,j=month,k=day; (i < nbOfDays) ; i++,k++)     
              {
-                if (k > 31) 
-                {
-                    j++;
-                    k=1;
-                }    
-                if (tab[j - 1, k-1] == flag) //false = jour libre 
-                    count++;                 // verifie si tt les jours sont libre 
+               
+                    if (k > 31) 
+                    {
+                        j++;
+                        k=1;
+                    } 
+                    if (tab[j - 1, k-1] == flag) //false = jour libre 
+                        count++;                 // verifie si tt les jours sont libre 
              }
              return count; 
          }
-       private static void printAllBusyDate(bool[,] tab)       
+      public static void printAllBusyDate(bool[,] tab)       
        {
            bool busy=false;
            for (int i = 0 ,j=1,k=1; i < 372 ; i++,k++)     
@@ -175,8 +193,8 @@ namespace Targil1_2
                     busy=false;
                 }
            }
-       }
+      }
     }
-    
 }
+    
 
